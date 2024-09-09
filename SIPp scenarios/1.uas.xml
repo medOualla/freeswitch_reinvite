@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<!--
+    SIPp scenario to test re-invites functionnality
+        The caller is Jack
+        The callee is Sara
+
+    - There dialog does not have Record-Route or Route headers
+    - To use the scenario when the first re-INVITE has been accepted, comment the points 8 and 9 and uncomment points 10 and 11
+-->
+
+<scenario name="UAS: Testing re-invites">
+
+  <!--1. The callee receives the initial invite-->
+  <recv request="INVITE" crlf="true" rrs="true"></recv>
+
+  <!--2. The callee sends 100 trying provisional response to prevent retransmissions-->
+  <send>
+    <![CDATA[
+
+      SIP/2.0 100 Trying
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Content-Length: [len]
+
+    ]]>
+  </send>
+
+  <!--3. The phone is alerting the user, 180 Ringing to send-->
+  <send>
+    <![CDATA[
+
+      SIP/2.0 180 Ringing
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[pid]SIPpTag01[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:sara@[local_ip]:[local_port];transport=[transport]>
+      Content-Length: [len]
+
+    ]]>
+  </send>
+
+  <!--4. The callee accepts the invite, sending the 200 OK-->
+  <send retrans="500">
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[pid]SIPpTag01[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:sara@[local_ip]:[local_port];transport=[transport]>
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=sara 48221196 8722611489 IN IP[local_ip_type] [local_ip]
+      s=-
+      c=IN IP[local_ip_type] [local_ip]
+      t=0 0
+      m=audio [rtpstream_audio_port] RTP/AVP 8
+      a=rtpmap:8 PCMA/8000
+
+    ]]>
+  </send>
+
+  <!--5. The callee waits the ACK to confirm the receipt of the final SIP Response -->
+  <recv request="ACK" crlf="true">
+    <!--Extract From and To headers from the last received request from UAC to use them later in subsequent requests-->
+    <action>
+      <ereg regexp=".*" search_in="hdr" header="From:" check_it="true" assign_to="init_from" />
+      <ereg regexp=".*" search_in="hdr" header="To:" check_it="true" assign_to="init_to" />
+    </action>
+  </recv>
+  
+  <!--6. The callee wants to upgrade the call adding video media using codec 34-->
+    <!--comment the pause if you want-->
+  <pause milliseconds="1000"/>
+
+  <send retrans="500" start_txn="reinvite_1_callee">
+    <![CDATA[
+
+      INVITE [next_url] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      From: [$init_to]
+      To: [$init_from]
+      [last_Call-ID:]
+      CSeq: 760 INVITE
+      Contact: <sip:sara@[local_ip]:[local_port];transport=[transport]>
+      Max-Forwards: 70
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=sara 48221196 8722611489 IN IP[local_ip_type] [local_ip]
+      s=-
+      c=IN IP[local_ip_type] [local_ip]
+      t=0 0
+      m=audio [rtpstream_audio_port] RTP/AVP 8
+      a=rtpmap:8 PCMA/8000
+      m=video [rtpstream_video_port] RTP/AVP 34
+
+    ]]>  
+
+  </send>
+
+  <!--7. The callee receives 100 Trying-->
+  <recv response="100" optional="true" response_txn="reinvite_1_callee"></recv>
+
+  <!--8. The caller does not want to upgrade to video, receiving the 488 SIP Response-->
+  <!-- <recv response="488" response_txn="reinvite_1_callee" next="call_done_reinvite_1_callee" rtd="true" crlf="true">
+  </recv> -->
+
+  <!--9. the callee sends ACK to confirm the receipt-->
+  <!-- <label id="call_done_reinvite_1_callee" />
+  <send ack_txn="reinvite_1_callee">
+    <![CDATA[
+
+      ACK [next_url] SIP/2.0
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      CSeq: 760 ACK
+      Max-Forwards: 70
+      Content-Length: [len]
+
+    ]]>
+  </send> -->
+  
+      <!--*******UNCOMMENT POINTS 10 AND 11 IN CASE 200 OK HAS BEEN RECEIVED and COMMENT POINTS 8 AND 9*******-->
+  <!--10. The caller agrees to upgrade to video, receiving the 200 OK-->
+  <recv response="200" response_txn="reinvite_1_callee" next="call_done_reinvite_1_callee" rtd="true" crlf="true">
+  </recv>
+
+  <!--11. the callee sends ACK to confirm the receipt-->
+  <label id="call_done_reinvite_1_callee" />
+  <send ack_txn="reinvite_1_callee">
+    <![CDATA[
+
+      ACK [next_url] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      CSeq: 760 ACK
+      Max-Forwards: 70
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  
+  <!--12. The callee receives a re-INVITE to change media audio codec from 8 to 18-->
+  <recv request="INVITE" crlf="true" rrs="true">
+  </recv>
+
+  <!--13. The callee sends 100 trying provisional response to prevent retransmissions-->
+  <send>
+    <![CDATA[
+
+      SIP/2.0 100 Trying
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  <!--14. The callee agrees the codec change, sending 200 ok to accept the re-INVITE-->
+  <send retrans="500">
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:sara@[local_ip]:[local_port];transport=[transport]>
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=sara 48221196 8722611489 IN IP[local_ip_type] [local_ip]
+      s=-
+      c=IN IP[local_ip_type] [local_ip]
+      t=0 0
+      m=audio [rtpstream_audio_port] RTP/AVP 18
+      a=rtpmap:18 PCMU/8000
+
+    ]]>
+  </send>
+
+  <!--15. The callee waits the ACK to confirm the receipt of the final SIP Response, else keeping the retransmissions -->
+  <recv request="ACK" crlf="true">
+  </recv>
+
+  <!--16. the UAS receives the BYE request-->
+  <recv request="BYE">
+  </recv>
+
+  <!--16. the UAS replies the BYE request with 200 OK-->
+  <send>
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  <!-- Keep the call open for a while in case the 200 is lost to be     -->
+  <!-- able to retransmit it if we receive the BYE again.               -->
+  <timewait milliseconds="4000"/>
+
+
+  <!-- definition of the response time repartition table (unit is ms)   -->
+  <ResponseTimeRepartition value="10, 20, 30, 40, 50, 100, 150, 200"/>
+
+  <!-- definition of the call length repartition table (unit is ms)     -->
+  <CallLengthRepartition value="10, 50, 100, 500, 1000, 5000, 10000"/>
+
+</scenario>

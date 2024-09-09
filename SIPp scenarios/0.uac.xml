@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<!--
+    SIPp scenario to test re-invites functionnality
+        The caller is Jack
+        The callee is Sara
+
+    - There dialog does not have Record-Route or Route headers
+    - To use the scenario when the first re-INVITE has been accepted, comment the points 6 and uncomment the point 7
+-->
+
+<scenario name="UAC: Testing re-invites">
+
+  <!--1. The caller sends the initial INVITE-->
+  <send retrans="500" start_txn="initial_invite_1">
+    <![CDATA[
+
+      INVITE sip:sara@[remote_ip]:[remote_port] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      From: <sip:jack@[local_ip]:[local_port]>;tag=[pid]SIPpTag09[call_number]
+      To: <sip:sara@[remote_ip]:[remote_port]>
+      Call-ID: [call_id]
+      CSeq: 1 INVITE
+      Contact: <sip:jack@[local_ip]:[local_port];transport=[transport]>
+      Max-Forwards: 70
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=jack 48221196 8722611489 IN IP[local_ip_type] [local_ip]
+      s=-
+      c=IN IP[media_ip_type] [media_ip]
+      t=0 0
+      m=audio [rtpstream_audio_port] RTP/AVP 8
+      a=rtpmap:8 PCMA/8000
+
+    ]]>
+  </send>
+
+  <!--2. The caller receives provisional and final success responses-->
+  <recv response="100" optional="true" response_txn="initial_invite_1"></recv>
+  <recv response="180" optional="true" response_txn="initial_invite_1"></recv>
+  <recv response="200" response_txn="initial_invite_1" next="call_accepted" rtd="true" crlf="true" rrs="true">
+  </recv>
+
+  <!--3. In case the callee has accepted the call, the UAC should ACK the 200 OK-->
+  <label id="call_accepted" />
+  <send ack_txn="initial_invite_1">
+    <![CDATA[
+
+      ACK [next_url] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      CSeq: 1 ACK
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  <!--4. The caller receives a re-INVITE to upgrade the call to video-->
+  <recv request="INVITE" crlf="true" rrs="true">
+  </recv>
+
+  <!--5. The caller sends 100 trying provisional response to prevent retransmissions-->
+  <send>
+    <![CDATA[
+
+      SIP/2.0 100 Trying
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  <!--6. The caller does not want to upgrade to video, sending 488 to reject the re-INVITE-->
+  <!-- <send retrans="500">
+    <![CDATA[
+
+      SIP/2.0 488 Not Acceptable
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Content-Length: [len]
+
+    ]]>
+  </send> -->
+
+      <!--*******UNCOMMENT THE POINT 7 IN CASE THE CALLEE ACCEPTS THE RE-INVITE AND COMMENT THE POINT 6*******-->
+  <!--7. The caller wants to upgrade to video, sending 200 ok to accept the re-INVITE-->
+  <send retrans="500">
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:jack@[local_ip]:[local_port];transport=[transport]>
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=jack 48221196 8722611489 IN IP[local_ip_type] [local_ip]
+      s=-
+      c=IN IP[local_ip_type] [local_ip]
+      t=0 0
+      m=audio [rtpstream_audio_port] RTP/AVP 8
+      a=rtpmap:8 PCMA/8000
+      m=video [rtpstream_video_port] RTP/AVP 34
+
+    ]]>
+  </send>
+
+  <!--8. The caller waits the ACK to confirm the receipt of the final SIP Response, else keeping the retransmissions -->
+  <recv request="ACK" crlf="true">
+  </recv>
+  
+  
+  <!--9. The caller wants to wants to change the audio codec from 8 to 18-->
+    <!--comment the pause if you want-->
+  <pause milliseconds="3000"/>
+  <send retrans="500" start_txn="reinvite_2_caller">
+    <![CDATA[
+
+      INVITE [next_url] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      From: <sip:jack@[local_ip]:[local_port]>;tag=[pid]SIPpTag09[call_number]
+      To: <sip:sara@[remote_ip]:[remote_port]>[peer_tag_param]
+      [last_Call-ID:]
+      CSeq: 2 INVITE
+      Max-Forwards: 70
+      Contact: <sip:jack@[local_ip]:[local_port];transport=[transport]>
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=jack 48221196 8722611489 IN IP[local_ip_type] [local_ip]
+      s=-
+      c=IN IP[media_ip_type] [media_ip]
+      t=0 0
+      m=audio [rtpstream_audio_port] RTP/AVP 18
+      a=rtpmap:18 PCMU/8000
+
+    ]]>
+  </send>
+
+  <!--10. The caller receives 100 Trying-->
+  <recv response="100" optional="true" response_txn="reinvite_2_caller"></recv>
+  
+  <!--11. The UAS accepts to change the codec 8 to 18-->
+  <recv response="200" response_txn="reinvite_2_caller" next="call_done_reinvite_2_caller" rtd="true" crlf="true">
+  </recv>
+  
+  <!--12. the UAC sends an ACK to confirm the receipt of 200 OK-->
+  <label id="call_done_reinvite_2_caller" />
+  <send ack_txn="reinvite_2_caller">
+    <![CDATA[
+
+      ACK [next_url] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      CSeq: 2 ACK
+      Max-Forwards: 70
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  <!--13. the caller decides to hang-up the callee, thus sending a BYE-->
+  <send retrans="500" start_txn="bye">
+    <![CDATA[
+
+      BYE [next_url] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      CSeq: 3 BYE
+      Max-Forwards: 70
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  <!--14. waiting for the final response of BYE request-->
+  <recv response_txn="bye" response="200" crlf="true" next="call_end"></recv>
+
+  <label id="call_end" />
+  <!-- definition of the response time repartition table (unit is ms)   -->
+  <ResponseTimeRepartition value="10, 20, 30, 40, 50, 100, 150, 200"/>
+
+  <!-- definition of the call length repartition table (unit is ms)     -->
+  <CallLengthRepartition value="10, 50, 100, 500, 1000, 5000, 10000, 20000"/>
+
+  <!-- pause to receive unexpected messages  -->
+  <pause milliseconds="3000"/>
+
+
+</scenario>
