@@ -1,0 +1,207 @@
+freeswitch@freeswitch>
+2024-09-09 16:42:57.414267 98.30% [NOTICE] switch_channel.c:1123 New Channel sofia/TRUSTED/jack@10.10.10.2:5080 [11695011-294a-4a68-81c6-96f4285b277b]
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:581 (sofia/TRUSTED/jack@10.10.10.2:5080) Running State Change CS_NEW (Cur 5 Tot 5)
+2024-09-09 16:42:57.414267 98.30% [INFO] sofia.c:10453 sofia/TRUSTED/jack@10.10.10.2:5080 receiving invite from 10.10.10.2:5080 version: 1.10.9-release git a615e85 2023-02-03 20:07:30Z 64bit call-id: 1-42@10.10.10.2
+2024-09-09 16:42:57.414267 98.30% [DEBUG] sofia.c:10547 verifying acl "INBOUND_PEERS_ACL" for ip/port 10.10.10.2:0.
+2024-09-09 16:42:57.414267 98.30% [DEBUG] sofia.c:7487 Channel sofia/TRUSTED/jack@10.10.10.2:5080 entering state [received][100]
+2024-09-09 16:42:57.414267 98.30% [DEBUG] sofia.c:7497 Remote SDP:
+v=0
+o=jack 48221196 8722611489 IN IP4 10.10.10.2
+s=-
+c=IN IP4 10.10.10.2
+t=0 0
+m=audio 6000 RTP/AVP 8
+a=rtpmap:8 PCMA/8000
+
+2024-09-09 16:42:57.414267 98.30% [DEBUG] sofia.c:7900 (sofia/TRUSTED/jack@10.10.10.2:5080) State Change CS_NEW -> CS_INIT
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:600 (sofia/TRUSTED/jack@10.10.10.2:5080) State NEW
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:581 (sofia/TRUSTED/jack@10.10.10.2:5080) Running State Change CS_INIT (Cur 5 Tot 5)
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:624 (sofia/TRUSTED/jack@10.10.10.2:5080) State INIT
+2024-09-09 16:42:57.414267 98.30% [DEBUG] mod_sofia.c:97 sofia/TRUSTED/jack@10.10.10.2:5080 SOFIA INIT
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:40 sofia/TRUSTED/jack@10.10.10.2:5080 Standard INIT
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:48 (sofia/TRUSTED/jack@10.10.10.2:5080) State Change CS_INIT -> CS_ROUTING
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:624 (sofia/TRUSTED/jack@10.10.10.2:5080) State INIT going to sleep
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:581 (sofia/TRUSTED/jack@10.10.10.2:5080) Running State Change CS_ROUTING (Cur 5 Tot 5)
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_channel.c:2380 (sofia/TRUSTED/jack@10.10.10.2:5080) Callstate Change DOWN -> RINGING
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:640 (sofia/TRUSTED/jack@10.10.10.2:5080) State ROUTING
+2024-09-09 16:42:57.414267 98.30% [DEBUG] mod_sofia.c:158 sofia/TRUSTED/jack@10.10.10.2:5080 SOFIA ROUTING
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:230 sofia/TRUSTED/jack@10.10.10.2:5080 Standard ROUTING
+2024-09-09 16:42:57.414267 98.30% [INFO] mod_dialplan_xml.c:639 Processing jack <jack>->sara in context trusted
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 parsing [trusted->trusted_untrusted] continue=false
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Regex (PASS) [trusted_untrusted] destination_number(sara) =~ /^sara$/ break=on-false
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action ring_ready()
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action export(nolocal:sip_unhold_nosdp=true)
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action set(prefix=${sip_h_})
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action set(sip_ignore_183nosdp=false)
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action export(transparent_180_183=true)
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action export(allow_183_after_early=true)
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action export(allow_180_after_early=true)
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action export(sip_wait_for_aleg_ack=true)
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action export(sip_wait_for_bleg_ack=true)
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action set(bypass_media=true)
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action log(-----------------------------------entering context booob booooo)
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action set(call_timeout=700)
+Dialplan: sofia/TRUSTED/jack@10.10.10.2:5080 Action bridge({sip_cid_type=none}sofia/gateway/peer1_untrusted_outbound/sara@200.200.200.2:5060)
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:281 (sofia/TRUSTED/jack@10.10.10.2:5080) State Change CS_ROUTING -> CS_EXECUTE
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:640 (sofia/TRUSTED/jack@10.10.10.2:5080) State ROUTING going to sleep
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:581 (sofia/TRUSTED/jack@10.10.10.2:5080) Running State Change CS_EXECUTE (Cur 5 Tot 5)
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:647 (sofia/TRUSTED/jack@10.10.10.2:5080) State EXECUTE
+2024-09-09 16:42:57.414267 98.30% [DEBUG] mod_sofia.c:213 sofia/TRUSTED/jack@10.10.10.2:5080 SOFIA EXECUTE
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_core_state_machine.c:323 sofia/TRUSTED/jack@10.10.10.2:5080 Standard EXECUTE
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 ring_ready()
+2024-09-09 16:42:57.414267 98.30% [NOTICE] mod_sofia.c:2516 Ring-Ready sofia/TRUSTED/jack@10.10.10.2:5080!
+2024-09-09 16:42:57.414267 98.30% [DEBUG] sofia.c:7487 Channel sofia/TRUSTED/jack@10.10.10.2:5080 entering state [early][180]
+2024-09-09 16:42:57.414267 98.30% [NOTICE] mod_dptools.c:1115 Ring Ready sofia/TRUSTED/jack@10.10.10.2:5080!
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 export(nolocal:sip_unhold_nosdp=true)
+2024-09-09 16:42:57.414267 98.30% [DEBUG] switch_channel.c:1315 EXPORT (export_vars) (REMOTE ONLY) [sip_unhold_nosdp]=[true]
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 set(prefix=)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] mod_dptools.c:1673 SET sofia/TRUSTED/jack@10.10.10.2:5080 [prefix]=[UNDEF]
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 set(sip_ignore_183nosdp=false)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] mod_dptools.c:1673 SET sofia/TRUSTED/jack@10.10.10.2:5080 [sip_ignore_183nosdp]=[false]
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 export(transparent_180_183=true)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1315 EXPORT (export_vars) [transparent_180_183]=[true]
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 export(allow_183_after_early=true)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1315 EXPORT (export_vars) [allow_183_after_early]=[true]
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 export(allow_180_after_early=true)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1315 EXPORT (export_vars) [allow_180_after_early]=[true]
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 export(sip_wait_for_aleg_ack=true)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1315 EXPORT (export_vars) [sip_wait_for_aleg_ack]=[true]
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 export(sip_wait_for_bleg_ack=true)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1315 EXPORT (export_vars) [sip_wait_for_bleg_ack]=[true]
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 set(bypass_media=true)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] mod_dptools.c:1673 SET sofia/TRUSTED/jack@10.10.10.2:5080 [bypass_media]=[true]
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 log(-----------------------------------entering context booob booooo)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] mod_dptools.c:1867 context booob booooo
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 set(call_timeout=700)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] mod_dptools.c:1673 SET sofia/TRUSTED/jack@10.10.10.2:5080 [call_timeout]=[700]
+EXECUTE [depth=0] sofia/TRUSTED/jack@10.10.10.2:5080 bridge({sip_cid_type=none}sofia/gateway/peer1_untrusted_outbound/sara@200.200.200.2:5060)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1269 sofia/TRUSTED/jack@10.10.10.2:5080 EXPORTING[export_vars] [sip_unhold_nosdp]=[true] to event
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1269 sofia/TRUSTED/jack@10.10.10.2:5080 EXPORTING[export_vars] [transparent_180_183]=[true] to event
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1269 sofia/TRUSTED/jack@10.10.10.2:5080 EXPORTING[export_vars] [allow_183_after_early]=[true] to event
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1269 sofia/TRUSTED/jack@10.10.10.2:5080 EXPORTING[export_vars] [allow_180_after_early]=[true] to event
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1269 sofia/TRUSTED/jack@10.10.10.2:5080 EXPORTING[export_vars] [sip_wait_for_aleg_ack]=[true] to event
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:1269 sofia/TRUSTED/jack@10.10.10.2:5080 EXPORTING[export_vars] [sip_wait_for_bleg_ack]=[true] to event
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_ivr_originate.c:2291 Parsing global variables
+2024-09-09 16:42:57.434058 98.30% [NOTICE] switch_channel.c:1123 New Channel sofia/UNTRUSTED/sara@200.200.200.2:5060 [81e56a4e-1f86-4502-be60-95754031a453]
+2024-09-09 16:42:57.434058 98.30% [DEBUG] mod_sofia.c:5117 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State Change CS_NEW -> CS_INIT
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:581 (sofia/UNTRUSTED/sara@200.200.200.2:5060) Running State Change CS_INIT (Cur 6 Tot 6)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:624 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State INIT
+2024-09-09 16:42:57.434058 98.30% [DEBUG] mod_sofia.c:97 sofia/UNTRUSTED/sara@200.200.200.2:5060 SOFIA INIT
+2024-09-09 16:42:57.434058 98.30% [INFO] sofia_glue.c:1654 sofia/UNTRUSTED/sara@200.200.200.2:5060 sending invite call-id: (null)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] sofia_glue.c:1657 sofia/UNTRUSTED/sara@200.200.200.2:5060 sending invite version: 1.10.9-release git a615e85 2023-02-03 20:07:30Z 64bit
+Local SDP:
+v=0
+o=jack 48221196 8722611489 IN IP4 10.10.10.2
+s=-
+c=IN IP4 10.10.10.2
+t=0 0
+m=audio 6000 RTP/AVP 8
+a=rtpmap:8 PCMA/8000
+
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:40 sofia/UNTRUSTED/sara@200.200.200.2:5060 Standard INIT
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:48 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State Change CS_INIT -> CS_ROUTING
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:624 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State INIT going to sleep
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:581 (sofia/UNTRUSTED/sara@200.200.200.2:5060) Running State Change CS_ROUTING (Cur 6 Tot 6)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:640 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State ROUTING
+2024-09-09 16:42:57.434058 98.30% [DEBUG] mod_sofia.c:158 sofia/UNTRUSTED/sara@200.200.200.2:5060 SOFIA ROUTING
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_ivr_originate.c:67 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State Change CS_ROUTING -> CS_CONSUME_MEDIA
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:640 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State ROUTING going to sleep
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:581 (sofia/UNTRUSTED/sara@200.200.200.2:5060) Running State Change CS_CONSUME_MEDIA (Cur 6 Tot 6)
+2024-09-09 16:42:57.434058 98.30% [DEBUG] sofia.c:7487 Channel sofia/UNTRUSTED/sara@200.200.200.2:5060 entering state [calling][0]
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:659 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State CONSUME_MEDIA
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_core_state_machine.c:659 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State CONSUME_MEDIA going to sleep
+2024-09-09 16:42:57.434058 98.30% [DEBUG] sofia.c:7487 Channel sofia/UNTRUSTED/sara@200.200.200.2:5060 entering state [proceeding][180]
+2024-09-09 16:42:57.434058 98.30% [NOTICE] sofia.c:7598 Ring-Ready sofia/UNTRUSTED/sara@200.200.200.2:5060!
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:3494 (sofia/UNTRUSTED/sara@200.200.200.2:5060) Callstate Change DOWN -> RINGING
+2024-09-09 16:42:57.434058 98.30% [DEBUG] sofia.c:7487 Channel sofia/UNTRUSTED/sara@200.200.200.2:5060 entering state [completing][200]
+2024-09-09 16:42:57.434058 98.30% [DEBUG] sofia.c:7497 Remote SDP:
+v=0
+o=sara 48221196 8722611489 IN IP4 200.200.200.2
+s=-
+c=IN IP4 200.200.200.2
+t=0 0
+m=audio 6008 RTP/AVP 8
+a=rtpmap:8 PCMA/8000
+
+2024-09-09 16:42:57.434058 98.30% [NOTICE] sofia.c:8637 Channel [sofia/UNTRUSTED/sara@200.200.200.2:5060] has been answered
+2024-09-09 16:42:57.434058 98.30% [DEBUG] switch_channel.c:3893 (sofia/UNTRUSTED/sara@200.200.200.2:5060) Callstate Change RINGING -> ACTIVE
+2024-09-09 16:42:57.454343 98.30% [NOTICE] switch_ivr_originate.c:565 Ring Ready sofia/TRUSTED/jack@10.10.10.2:5080!
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_ivr_originate.c:3902 Originate Resulted in Success: [sofia/UNTRUSTED/sara@200.200.200.2:5060] Peer UUID: 81e56a4e-1f86-4502-be60-95754031a453
+2024-09-09 16:42:57.454343 98.30% [NOTICE] switch_ivr.c:820 Channel [sofia/TRUSTED/jack@10.10.10.2:5080] has been answered
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_channel.c:3893 (sofia/TRUSTED/jack@10.10.10.2:5080) Callstate Change RINGING -> ACTIVE
+2024-09-09 16:42:57.454343 98.30% [DEBUG] sofia.c:7487 Channel sofia/TRUSTED/jack@10.10.10.2:5080 entering state [completed][200]
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_ivr_bridge.c:1587 (sofia/TRUSTED/jack@10.10.10.2:5080) State Change CS_EXECUTE -> CS_HIBERNATE
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_ivr_bridge.c:1588 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State Change CS_CONSUME_MEDIA -> CS_HIBERNATE
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_core_state_machine.c:581 (sofia/UNTRUSTED/sara@200.200.200.2:5060) Running State Change CS_HIBERNATE (Cur 6 Tot 6)
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_core_state_machine.c:662 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State HIBERNATE
+2024-09-09 16:42:57.454343 98.30% [DEBUG] mod_sofia.c:195 sofia/UNTRUSTED/sara@200.200.200.2:5060 SOFIA HIBERNATE
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_core_state_machine.c:417 sofia/UNTRUSTED/sara@200.200.200.2:5060 Standard HIBERNATE
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_core_state_machine.c:662 (sofia/UNTRUSTED/sara@200.200.200.2:5060) State HIBERNATE going to sleep
+2024-09-09 16:42:57.454343 98.30% [DEBUG] sofia.c:7487 Channel sofia/TRUSTED/jack@10.10.10.2:5080 entering state [ready][200]
+2024-09-09 16:42:57.454343 98.30% [DEBUG] sofia.c:7487 Channel sofia/UNTRUSTED/sara@200.200.200.2:5060 entering state [ready][200]
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_core_state_machine.c:647 (sofia/TRUSTED/jack@10.10.10.2:5080) State EXECUTE going to sleep
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_core_state_machine.c:581 (sofia/TRUSTED/jack@10.10.10.2:5080) Running State Change CS_HIBERNATE (Cur 6 Tot 6)
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_core_state_machine.c:662 (sofia/TRUSTED/jack@10.10.10.2:5080) State HIBERNATE
+2024-09-09 16:42:57.454343 98.30% [DEBUG] mod_sofia.c:195 sofia/TRUSTED/jack@10.10.10.2:5080 SOFIA HIBERNATE
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_core_state_machine.c:417 sofia/TRUSTED/jack@10.10.10.2:5080 Standard HIBERNATE
+2024-09-09 16:42:57.454343 98.30% [DEBUG] switch_core_state_machine.c:662 (sofia/TRUSTED/jack@10.10.10.2:5080) State HIBERNATE going to sleep
+2024-09-09 16:42:58.474089 98.23% [DEBUG] sofia.c:7487 Channel sofia/UNTRUSTED/sara@200.200.200.2:5060 entering state [received][100]
+2024-09-09 16:42:58.474089 98.23% [DEBUG] sofia.c:7497 Remote SDP:
+v=0
+o=sara 48221196 8722611489 IN IP4 200.200.200.2
+s=-
+c=IN IP4 200.200.200.2
+t=0 0
+m=audio 6008 RTP/AVP 8
+a=rtpmap:8 PCMA/8000
+m=video 6010 RTP/AVP 34
+
+2024-09-09 16:42:58.474089 98.23% [DEBUG] sofia.c:8264 Passing SDP to other leg.
+v=0
+o=sara 48221196 8722611489 IN IP4 200.200.200.2
+s=-
+c=IN IP4 200.200.200.2
+t=0 0
+m=audio 6008 RTP/AVP 8
+a=rtpmap:8 PCMA/8000
+m=video 6010 RTP/AVP 34
+
+2024-09-09 16:42:58.474089 98.23% [DEBUG] mod_sofia.c:1647 sofia/TRUSTED/jack@10.10.10.2:5080 Sending media re-direct:
+v=0
+o=sara 48221196 8722611489 IN IP4 200.200.200.2
+s=-
+c=IN IP4 200.200.200.2
+t=0 0
+m=audio 6008 RTP/AVP 8
+a=rtpmap:8 PCMA/8000
+m=video 6010 RTP/AVP 34
+
+2024-09-09 16:42:58.474089 98.23% [INFO] sofia_glue.c:1654 sofia/TRUSTED/jack@10.10.10.2:5080 sending invite call-id: (null)
+2024-09-09 16:42:58.474089 98.23% [DEBUG] sofia_glue.c:1657 sofia/TRUSTED/jack@10.10.10.2:5080 sending invite version: 1.10.9-release git a615e85 2023-02-03 20:07:30Z 64bit
+Local SDP:
+v=0
+o=sara 48221196 8722611489 IN IP4 200.200.200.2
+s=-
+c=IN IP4 200.200.200.2
+t=0 0
+m=audio 6008 RTP/AVP 8
+a=rtpmap:8 PCMA/8000
+m=video 6010 RTP/AVP 34
+
+2024-09-09 16:42:58.474089 98.23% [DEBUG] sofia.c:7487 Channel sofia/TRUSTED/jack@10.10.10.2:5080 entering state [calling][0]
+2024-09-09 16:42:58.474089 98.23% [DEBUG] sofia.c:7051 Passing 488 Not Acceptable to other leg
+
+2024-09-09 16:42:58.474089 98.23% [DEBUG] sofia.c:7480 Channel sofia/TRUSTED/jack@10.10.10.2:5080 skipping state [ready][488]
+2024-09-09 16:42:58.474089 98.23% [DEBUG] mod_sofia.c:2352 Responding with 488 [Not Acceptable]
+2024-09-09 16:42:58.474089 98.23% [DEBUG] sofia.c:7480 Channel sofia/UNTRUSTED/sara@200.200.200.2:5060 skipping state [ready][488]
+2024-09-09 16:43:01.474156 98.23% [DEBUG] sofia.c:7487 Channel sofia/TRUSTED/jack@10.10.10.2:5080 entering state [received][100]
+2024-09-09 16:43:01.474156 98.23% [DEBUG] sofia.c:7497 Remote SDP:
+v=0
+o=jack 48221196 8722611489 IN IP4 10.10.10.2
+s=-
+c=IN IP4 10.10.10.2
+t=0 0
+m=audio 6000 RTP/AVP 18
+a=rtpmap:18 PCMU/8000
+
+freeswitch@freeswitch>
